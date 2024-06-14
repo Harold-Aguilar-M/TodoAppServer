@@ -32,7 +32,7 @@ export function insertUser(data, callback) {
                     } else {
                         callback(200, {
                             Message : 'User registration correctly',
-                            userId  : data.ID,
+                            UserID  : data.ID,
                         });
                     }
                 }
@@ -49,6 +49,20 @@ export function existUser(username, callback) {
     connection.query(
         'SELECT * FROM Users WHERE Username = ?',
         [username],
+        function(error, results, fields) {
+            if (error) {
+                throw error;
+            } else {
+                callback(results.length > 0 ? true : false);
+            }
+        }
+    )
+}
+
+export function existUserID(UserID, callback) {
+    connection.query(
+        'SELECT * FROM Users WHERE ID = ?',
+        [UserID],
         function(error, results, fields) {
             if (error) {
                 throw error;
