@@ -5,7 +5,7 @@ import cors from 'cors';
 import bcrypt from 'bcryptjs';
 import { nanoid } from 'nanoid';
 
-import { getTodos, insertTodo } from './models/todos.js';
+import { getTodo, getTodos, insertTodo } from './models/todos.js';
 import { insertUser } from './models/users.js';
 
 const app = express();
@@ -30,6 +30,25 @@ app.get('/todos/:UserID', function (req, res) {
     } else {
         res.status(500).json({
             Message : 'User is required'
+        });
+    }
+
+});
+
+app.get('/todo/:UserID/:TodoID', function (req, res) {
+
+    let params = req.params;
+
+    let UserID = params.UserID.trim();
+    let TodoID = params.TodoID.trim();
+
+    if (UserID != '' && TodoID != '') {
+        getTodo(UserID, TodoID, function(code, data) {
+            res.status(code).json(data);
+        });
+    } else {
+        res.status(500).json({
+            Message : 'User and Todo ID are required'
         });
     }
 
